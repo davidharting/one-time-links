@@ -8,6 +8,7 @@
   <meta name="author" content="David Harting">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{template "mvp.css"}}
   {{template "styles"}}
 </head>
 
@@ -18,7 +19,22 @@
 </body>
 </html>
 
-{{define "styles" }}
+{{define "styles"}}
+<style>
+    textarea {
+    	width: 600px;
+    	height: 120px;
+    	border: 3px solid #cccccc;
+    	padding: 5px;
+    	font-family: Tahoma, sans-serif;
+    	background-image: url(bg.gif);
+    	background-position: bottom right;
+    	background-repeat: no-repeat;
+    }
+</style>
+{{end}}
+
+{{define "mvp.css" }}
 <style>
 /* MVP.css v1.6.3 - https://github.com/andybrewer/mvp */
 
