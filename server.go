@@ -12,7 +12,7 @@ const PORT = 8080
 
 func main() {
 	log.SetPrefix("server: ")
-	http.HandleFunc("/", views.Index)
+	http.HandleFunc("/", views.Home)
 
 	log.Println(fmt.Sprintf("Server running on port %v 🚀", PORT))
 	err := http.ListenAndServe(":8080", nil)
