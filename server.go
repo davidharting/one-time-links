@@ -4,22 +4,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"davidharting.com/one-time-links/views"
 )
 
 const PORT = 8080
 
-var hitCounter int = 0
-
 func main() {
 	log.SetPrefix("server: ")
-	http.HandleFunc("/", index)
+	http.HandleFunc("/", views.Index)
 
 	log.Println(fmt.Sprintf("Server running on port %v 🚀", PORT))
 	err := http.ListenAndServe(":8080", nil)
 	log.Fatal(err)
-}
-
-func index(w http.ResponseWriter, r *http.Request) {
-	hitCounter++
-	fmt.Fprintf(w, "Hello, world %v", hitCounter)
 }
