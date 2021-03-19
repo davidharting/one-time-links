@@ -13,6 +13,22 @@
 </head>
 
 <body>
+   <header>
+      {{if .HasAlert}}
+        <section>
+            <aside class='notice'>
+              {{.Alert}}
+            </aside>
+        </section>
+     {{end}}
+     {{if .HasNotice}}
+       <section>
+         <aside class='alert'>
+            {{.Notice}}
+        </aside>
+       </section>
+     {{end}}
+   </header>
    <main>
      {{template "content"}}
    </main>
