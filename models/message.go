@@ -6,8 +6,8 @@ import (
 )
 
 type EncryptedMessage struct {
-	Id   string
-	Body string
+	Id   string `dynamo:"partition_key"`
+	Body string `dynamo:"body"`
 }
 
 type EncryptResult struct {
