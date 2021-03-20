@@ -8,20 +8,6 @@ import (
 	"davidharting.com/one-time-links/models"
 )
 
-func Home(w http.ResponseWriter, r *http.Request) {
-	log.SetPrefix("view Home\t")
-	if r.Method == http.MethodGet {
-		log.Println("Handling GET request")
-		homeIndex(w, r, make(map[string]string))
-	} else if r.Method == http.MethodPost {
-		log.Println("Handling POST request")
-		messageCreate(w, r)
-	} else {
-		log.Println(fmt.Sprintf("Unsupported request method %v", r.Method))
-		w.WriteHeader(http.StatusInternalServerError)
-	}
-}
-
 func homeIndex(w http.ResponseWriter, r *http.Request, props map[string]string) {
 	log.SetPrefix("view HomeIndex\t")
 
@@ -34,7 +20,7 @@ func homeIndex(w http.ResponseWriter, r *http.Request, props map[string]string) 
 	}
 }
 
-func messageCreate(w http.ResponseWriter, r *http.Request) {
+func createMessage(w http.ResponseWriter, r *http.Request) {
 	log.SetPrefix("view MessageCreate\t")
 	log.Println(fmt.Sprintf("Received form submission, message=%v", r.FormValue("message")))
 
