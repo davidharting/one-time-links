@@ -1,15 +1,18 @@
 package models
 
-import "github.com/ProtonMail/gopenpgp/v2/helper"
+import (
+	"github.com/ProtonMail/gopenpgp/v2/helper"
+	gonanoid "github.com/matoous/go-nanoid/v2"
+)
 
 type EncryptedMessage struct {
-	id   string
-	body string
+	Id   string
+	Body string
 }
 
 type EncryptResult struct {
-	message  EncryptedMessage
-	password string
+	Message  EncryptedMessage
+	Password string
 }
 
 const PASSWORD string = "hunter2"
@@ -21,14 +24,19 @@ func Encrypt(message string) (EncryptResult, error) {
 		return EncryptResult{}, err
 	}
 
+	id, err := gonanoid.New()
+	if err != nil {
+		return EncryptResult{}, err
+	}
+
 	return EncryptResult{
-		password: PASSWORD,
-		message:  EncryptedMessage{id: "fake-uuid", body: encrypted},
+		Password: PASSWORD,
+		Message:  EncryptedMessage{Id: id, Body: encrypted},
 	}, nil
 }
 
 func Decrypt(encrypted EncryptedMessage, password string) (string, error) {
-	plaintext, err := helper.DecryptMessageWithPassword([]byte(password), encrypted.body)
+	plaintext, err := helper.DecryptMessageWithPassword([]byte(password), encrypted.Body)
 	if err != nil {
 		return "", err
 	}

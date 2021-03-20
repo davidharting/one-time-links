@@ -4,71 +4,51 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"text/template"
-)
 
-type LayoutProps struct {
-	alert  string
-	notice string
-}
+	"davidharting.com/one-time-links/models"
+)
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	log.SetPrefix("view Home\t")
 	if r.Method == http.MethodGet {
 		log.Println("Handling GET request")
-		HomeIndex(w, r)
+		homeIndex(w, r, make(map[string]string))
 	} else if r.Method == http.MethodPost {
 		log.Println("Handling POST request")
-		MessageCreate(w, r)
+		messageCreate(w, r)
 	} else {
 		log.Println(fmt.Sprintf("Unsupported request method %v", r.Method))
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 }
 
-func HomeIndex(w http.ResponseWriter, r *http.Request) {
+func homeIndex(w http.ResponseWriter, r *http.Request, props map[string]string) {
 	log.SetPrefix("view HomeIndex\t")
 
-	err := render(w, "index", LayoutProps{})
+	err := render(w, "index", props)
 
 	if err != nil {
 		log.Default().Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("Server error"))
 	}
-
 }
 
-func MessageCreate(w http.ResponseWriter, r *http.Request) {
+func messageCreate(w http.ResponseWriter, r *http.Request) {
 	log.SetPrefix("view MessageCreate\t")
 	log.Println(fmt.Sprintf("Received form submission, message=%v", r.FormValue("message")))
-	w.Write([]byte(r.FormValue("message")))
-}
 
-type TemplateData struct {
-	Alert     string
-	HasNotice bool
-	HasAlert  bool
-	Notice    string
-}
+	message := r.FormValue("message")
+	result, err := models.Encrypt(message)
 
-func render(w http.ResponseWriter, templateName string, props LayoutProps) error {
-	data := getTemplateData(props)
-	t, err := template.ParseFiles("templates/layout.gohtml", fmt.Sprintf("templates/%v.gohtml", templateName))
+	props := make(
+		map[string]string)
 	if err != nil {
-		return err
+		props["alert"] = "Failed to create message"
+		homeIndex(w, r, props)
+		return
 	}
-	err = t.Execute(w, data)
-	return err
-}
 
-func getTemplateData(props LayoutProps) TemplateData {
-	hasNotice := len(props.notice) > 0
-	hasAlert := len(props.alert) > 0
-	return TemplateData{
-		Alert:     fmt.Sprintf(props.alert),
-		HasAlert:  hasAlert,
-		HasNotice: hasNotice,
-		Notice:    props.notice,
-	}
+	props["notice"] = fmt.Sprintf("Your message has id %v", result.Message.Id)
+	homeIndex(w, r, props)
 }

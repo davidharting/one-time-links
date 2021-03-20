@@ -14,17 +14,17 @@
 
 <body>
    <header>
-      {{if .HasAlert}}
+      {{if .notice }}
         <section>
             <aside class='notice'>
-              {{.Alert}}
+              {{.notice}}
             </aside>
         </section>
      {{end}}
-     {{if .HasNotice}}
+     {{if .alert}}
        <section>
          <aside class='alert'>
-            {{.Notice}}
+            {{.alert}}
         </aside>
        </section>
      {{end}}
