@@ -15,16 +15,36 @@ func createTable() dynamo.Table {
 	return table
 }
 
-func GetMessage(id string) (EncryptedMessage, error) {
+func GetMessage(id string, password string) (plaintext string, err error) {
 	t := createTable()
-	var m EncryptedMessage
-	err := t.Get("partition_key", id).Range("sort_key", dynamo.Equal, "unused").One(&m)
-
-	// TODO: Decrypt
+	var encrypted EncryptedMessage
+	err = t.Get("partition_key", id).Range("sort_key", dynamo.Equal, "unused").One(&encrypted)
 	if err != nil {
-		return EncryptedMessage{}, err
+		return "", err
 	}
-	return m, nil
+	plaintext, err = Decrypt(encrypted, password)
+	if err != nil {
+		return "", err
+	}
+	return plaintext, nil
+}
+
+func EncryptAndSave(message string) (link string, err error) {
+	result, err := Encrypt(message)
+	if err != nil {
+		return "", err
+	}
+	err = save(result.Message)
+	if err != nil {
+		return "", err
+	}
+	return result.link(), nil
+}
+
+func save(m EncryptedMessage) error {
+	t := createTable()
+	err := t.Put(m).Run()
+	return err
 }
 
 func init() {

@@ -25,16 +25,18 @@ func createMessage(w http.ResponseWriter, r *http.Request) {
 	log.Println(fmt.Sprintf("Received form submission, message=%v", r.FormValue("message")))
 
 	message := r.FormValue("message")
-	result, err := models.Encrypt(message)
 
-	props := make(
-		map[string]string)
+	props := make(map[string]string)
+
+	link, err := models.EncryptAndSave(message)
 	if err != nil {
+		log.Printf("Error encrypting and saving message %v\n", err)
 		props["alert"] = "Failed to create message"
 		homeIndex(w, r, props)
 		return
 	}
 
-	props["notice"] = fmt.Sprintf("Your message has id %v", result.Message.Id)
+	uri := fmt.Sprintf("%v%v", r.Host, link)
+	props["notice"] = fmt.Sprintf("You can share your message with this link %v", uri)
 	homeIndex(w, r, props)
 }
