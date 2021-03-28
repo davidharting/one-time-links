@@ -2,7 +2,7 @@
 one-time-links
 
 # secrets
-secrets.yaml
+.envrc
 
 # scribbles
 notes.md
