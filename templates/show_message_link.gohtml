@@ -1,0 +1,18 @@
+{{define "content"}}
+
+<h1>Your one-time link</h1>
+
+<p>
+    This link may be used exactly once.
+    Whoever you share it with will be able to view the message you encrypted, and then the message will be destroyed.
+    If you use the link yourself, the message will be destroyed and anyone you share the link with will not be able to view the message.
+</p>
+
+<pre>{{.link}}</pre>
+
+
+<article>
+  {{.body}}
+</article>
+
+{{end}}

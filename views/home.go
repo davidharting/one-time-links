@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 
 	"davidharting.com/one-time-links/models"
 )
@@ -28,7 +29,7 @@ func createMessage(w http.ResponseWriter, r *http.Request) {
 
 	props := make(map[string]string)
 
-	link, err := models.EncryptAndSave(message)
+	relative_link, err := models.EncryptAndSave(message)
 	if err != nil {
 		log.Printf("Error encrypting and saving message %v\n", err)
 		props["alert"] = "Failed to create message"
@@ -36,7 +37,8 @@ func createMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	uri := fmt.Sprintf("%v%v", r.Host, link)
-	props["notice"] = fmt.Sprintf("You can share your message with this link %v", uri)
-	homeIndex(w, r, props)
+	link := fmt.Sprintf("%v%v", r.Host, relative_link)
+	params := url.Values{"link": {link}}
+	redirect_to := fmt.Sprintf("/link/?%v", params.Encode())
+	http.Redirect(w, r, redirect_to, http.StatusSeeOther)
 }

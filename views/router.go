@@ -20,6 +20,8 @@ func Router(w http.ResponseWriter, r *http.Request) {
 		createMessage(w, r)
 	case routeShowMessage:
 		showMessage(w, r)
+	case routeShowMessageLink:
+		showMessageLink(w, r)
 	case routeNotFound:
 		render(w, "not_found", make(map[string]string))
 	case routeBadRequest:
@@ -43,11 +45,12 @@ func getPath(r *http.Request) string {
 type route = string
 
 const (
-	routeHomeIndex     route = "homeIndex"
-	routeCreateMessage route = "createMessage"
-	routeShowMessage   route = "showMessage"
-	routeNotFound      route = "notFound"
-	routeBadRequest    route = "badRequest"
+	routeHomeIndex       route = "homeIndex"
+	routeCreateMessage   route = "createMessage"
+	routeShowMessage     route = "showMessage"
+	routeShowMessageLink route = "showMessageLink"
+	routeNotFound        route = "notFound"
+	routeBadRequest      route = "badRequest"
 )
 
 func getRoute(r *http.Request) route {
@@ -56,6 +59,10 @@ func getRoute(r *http.Request) route {
 
 	if path == "/message/" && method == http.MethodGet {
 		return routeShowMessage
+	}
+
+	if path == "/link/" && method == http.MethodGet {
+		return routeShowMessageLink
 	}
 
 	if path == "/" && method == http.MethodGet {
