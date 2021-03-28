@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"davidharting.com/one-time-links/models"
+	"github.com/davidharting/one-time-links/models"
 )
 
 func homeIndex(w http.ResponseWriter, r *http.Request, props map[string]string) {

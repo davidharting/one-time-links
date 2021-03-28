@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"davidharting.com/one-time-links/models"
+	"github.com/davidharting/one-time-links/models"
 )
 
 func showMessage(w http.ResponseWriter, r *http.Request) {

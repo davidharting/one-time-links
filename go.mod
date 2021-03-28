@@ -1,4 +1,4 @@
-module davidharting.com/one-time-links
+module github.com/davidharting/one-time-links
 
 go 1.16
 

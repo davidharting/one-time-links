@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"davidharting.com/one-time-links/views"
+	"github.com/davidharting/one-time-links/views"
 )
 
 const PORT = 8080
