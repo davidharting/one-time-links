@@ -2,6 +2,8 @@
 
 Securely share one-time links.
 
+![demo](./demo.gif)
+
 ## Implementation
 
 This is the tech I was excited to try out for this project!
