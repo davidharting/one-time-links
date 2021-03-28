@@ -1,0 +1,7 @@
+# Grabbed this config from https://github.com/heroku/go-getting-started
+build:
+  languages:
+    - go
+
+run:
+  web: server
