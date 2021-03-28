@@ -1,13 +1,16 @@
 package views
 
 import (
+	_ "embed"
 	"fmt"
-	"html/template"
 	"net/http"
+	"text/template"
+
+	"davidharting.com/one-time-links/templates"
 )
 
 func render(w http.ResponseWriter, templateName string, props map[string]string) error {
-	t, err := template.ParseFiles("templates/layout.gohtml", fmt.Sprintf("templates/%v.gohtml", templateName))
+	t, err := template.ParseFS(templates.Files, "layout.gohtml", fmt.Sprintf("%v.gohtml", templateName))
 	if err != nil {
 		return err
 	}
